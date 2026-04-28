@@ -9,21 +9,26 @@
 /* ---------- Variables de diseño ---------- */
 :root {
     /* Paleta */
-    --color-fondo:       #f5f2ed;   /* crema muy suave */
-    --color-superficie:  #ffffff;
-    --color-borde:       #ddd8cf;
-    --color-acento:      #8b6f47;   /* sepia cálido — evoca papel antiguo */
-    --color-acento-claro:#c4a882;
-    --color-texto:       #2c2c2c;
-    --color-texto-suave: #6b6560;
-    --color-pie:         #f0ece6;
+    --color-fondo:          #f5f2ed;
+    --color-superficie:     #ffffff;
+    --color-borde:          #ddd8cf;
+    --color-acento:         #8b6f47;   /* sepia cálido */
+    --color-acento-claro:   #c4a882;
+    --color-texto:          #2c2c2c;
+    --color-texto-suave:    #6b6560;
+    --color-pie:            #f0ece6;
+
+    /* Nav */
+    --nav-fondo:            #1e1a16;
+    --nav-texto:            #f0ece6;
+    --nav-alto:             56px;
 
     /* Tipografía */
-    --fuente-titulo:  'DM Serif Display', Georgia, serif;
-    --fuente-cuerpo:  'Inter', system-ui, sans-serif;
+    --fuente-titulo:    'DM Serif Display', Georgia, serif;
+    --fuente-cuerpo:    'Inter', system-ui, sans-serif;
 
-    /* Espacios */
-    --radio:          8px;
+    /* Espacios y efectos */
+    --radio:            8px;
     --sombra-sello:
         0 2px  6px  rgba(0, 0, 0, .06),
         0 8px  24px rgba(0, 0, 0, .09),
@@ -46,6 +51,8 @@
 
 html {
     scroll-behavior: smooth;
+    /* Compensa la nav fija al saltar a anclas */
+    scroll-padding-top: calc(var(--nav-alto) + 1rem);
 }
 
 body {
@@ -58,6 +65,8 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* Espacio para que el contenido no quede bajo la nav */
+    padding-top: var(--nav-alto);
 }
 
 img {
@@ -66,7 +75,71 @@ img {
     height: auto;
 }
 
-/* ---------- Header ---------- */
+/* ============================================================
+   NAVEGACIÓN FIJA (sticky)
+   ============================================================ */
+#nav-principal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--nav-alto);
+    background-color: var(--nav-fondo);
+    border-bottom: 2px solid var(--color-acento);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .35);
+}
+
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.nav-marca {
+    font-family: var(--fuente-titulo);
+    font-size: 1.05rem;
+    color: var(--color-acento-claro);
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
+
+.nav-lista {
+    list-style: none;
+    display: flex;
+    gap: .25rem;
+}
+
+.nav-lista a {
+    display: inline-block;
+    padding: .4rem .9rem;
+    color: var(--nav-texto);
+    text-decoration: none;
+    font-size: .88rem;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    border-radius: var(--radio);
+    transition:
+        background-color var(--transicion),
+        color            var(--transicion);
+}
+
+.nav-lista a:hover,
+.nav-lista a:focus-visible {
+    background-color: var(--color-acento);
+    color: #fff;
+    outline: none;
+}
+
+/* ============================================================
+   ENCABEZADO
+   ============================================================ */
 header {
     text-align: center;
     padding: 3.5rem 1.5rem 2.5rem;
@@ -79,7 +152,6 @@ header {
     position: relative;
 }
 
-/* Línea decorativa superior — evoca un matasellos */
 header::before {
     content: '';
     display: block;
@@ -109,36 +181,97 @@ header h1 {
     text-transform: uppercase;
 }
 
-/* ---------- Main ---------- */
+/* ============================================================
+   MAIN
+   ============================================================ */
 main {
     flex: 1;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2.5rem 1.5rem 4rem;
+    padding: 3rem 1.5rem 5rem;
 }
 
-/* ---------- Galería — CSS Grid ---------- */
+/* ============================================================
+   CONTINENTE — título imponente
+   ============================================================ */
+.continente {
+    margin-bottom: 4rem;
+}
+
+.continente-titulo {
+    font-family: var(--fuente-titulo);
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-texto);
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    padding-bottom: .75rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 3px solid var(--color-acento);
+    position: relative;
+}
+
+/* Subrayado doble decorativo */
+.continente-titulo::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--color-acento-claro);
+    border-radius: 2px;
+}
+
+/* ============================================================
+   PAÍS — título sobrio
+   ============================================================ */
+.pais {
+    margin-bottom: 2.5rem;
+}
+
+.pais-titulo {
+    font-family: var(--fuente-cuerpo);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-texto-suave);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-left: .75rem;
+    border-left: 3px solid var(--color-acento-claro);
+}
+
+/* ============================================================
+   GALERÍA — CSS Grid auto-fill
+   ============================================================ */
 .galeria {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.75rem;
     align-items: start;
 }
 
-/* Título de sección */
-.galeria > h2 {
-    grid-column: 1 / -1;           /* ocupa todo el ancho */
-    font-family: var(--fuente-titulo);
-    font-size: clamp(1.3rem, 3vw, 1.9rem);
-    font-weight: 400;
-    color: var(--color-acento);
-    padding-bottom: .5rem;
-    border-bottom: 1px solid var(--color-borde);
-    margin-bottom: .5rem;
+/* Estado vacío / placeholder */
+.galeria-vacia {
+    display: block;          /* anula el grid cuando no hay sellos */
 }
 
-/* ---------- Sello — cuadro de exposición ---------- */
+.galeria-placeholder {
+    font-size: .82rem;
+    font-style: italic;
+    color: var(--color-borde);
+    padding: .6rem .9rem;
+    border: 1px dashed var(--color-borde);
+    border-radius: var(--radio);
+    background: rgba(255,255,255,.5);
+}
+
+/* ============================================================
+   SELLO — cuadro de exposición
+   ============================================================ */
 .sello {
     background-color: var(--color-superficie);
     border: 1px solid var(--color-borde);
@@ -146,19 +279,18 @@ main {
     padding: 1.25rem;
     box-shadow: var(--sombra-sello);
     transition:
-        transform      var(--transicion),
-        box-shadow     var(--transicion);
+        transform   var(--transicion),
+        box-shadow  var(--transicion);
     position: relative;
     overflow: hidden;
 }
 
-/* Micro-animación al pasar el cursor */
 .sello:hover {
     transform: translateY(-5px);
     box-shadow: var(--sombra-hover);
 }
 
-/* Acento decorativo en la esquina superior izquierda */
+/* Franja de acento al hover */
 .sello::before {
     content: '';
     position: absolute;
@@ -180,7 +312,7 @@ main {
     opacity: 1;
 }
 
-/* ---------- Figure y imagen del sello ---------- */
+/* ---------- Figure e imagen ---------- */
 .sello figure {
     display: flex;
     flex-direction: column;
@@ -189,7 +321,7 @@ main {
 
 .sello figure img {
     width: 100%;
-    max-width: 100%;          /* responsiva */
+    max-width: 100%;
     height: auto;
     border: 1px solid var(--color-borde);
     border-radius: calc(var(--radio) - 2px);
@@ -208,9 +340,9 @@ main {
     gap: .45rem;
 }
 
-.sello figcaption h3 {
+.sello figcaption h4 {
     font-family: var(--fuente-titulo);
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 400;
     color: var(--color-texto);
 }
@@ -221,7 +353,6 @@ main {
     line-height: 1.65;
 }
 
-/* Metadatos (país, código, etc.) */
 .sello figcaption .meta {
     margin-top: .3rem;
     font-size: .78rem;
@@ -233,7 +364,9 @@ main {
     padding-top: .55rem;
 }
 
-/* ---------- Footer ---------- */
+/* ============================================================
+   FOOTER
+   ============================================================ */
 footer {
     text-align: center;
     padding: 1.4rem 1rem;
@@ -244,25 +377,44 @@ footer {
     letter-spacing: .03em;
 }
 
-/* ---------- Utilidades de accesibilidad ---------- */
+/* ============================================================
+   ACCESIBILIDAD
+   ============================================================ */
 :focus-visible {
     outline: 3px solid var(--color-acento);
     outline-offset: 3px;
     border-radius: 3px;
 }
 
-/* ---------- Responsive ---------- */
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    .nav-marca {
+        display: none;     /* más espacio en móvil */
+    }
+
+    .nav-lista a {
+        padding: .4rem .6rem;
+        font-size: .82rem;
+    }
+}
+
 @media (max-width: 600px) {
     header {
         padding: 2.5rem 1rem 2rem;
     }
 
     main {
-        padding: 1.8rem 1rem 3rem;
+        padding: 2rem 1rem 3rem;
     }
 
     .galeria {
         grid-template-columns: 1fr;
-        gap: 1.4rem;
+        gap: 1.2rem;
+    }
+
+    .continente-titulo {
+        font-size: 2rem;
     }
 }
